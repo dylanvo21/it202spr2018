@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+ <head>
+        <meta charset="utf-8" />
+        <title>Homework 8</title>
+
+        <!-- The stylesheet -->
+        <link rel="stylesheet" href="assets/css/styles.css" />
+
+        <!-- Google Fonts -->
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Playball|Open+Sans+Condensed:300,700" />
+
+        <!--[if lt IE 9]>
+          <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+    
+    <body>
+        <h1>Check the Weather</h1>
+        <p>Please enter in a zip code to check the weather in the area</p>
+        <input type="textbox" id="search" placeholder="Ex. 60056">
+        <button onClick="doSearch()">Search</button>
+    </body>
+    <script>
+        function doSearch(){
+            
+        }
+        
+    </script>
+    <script src="https://query.yahooapis.com/v1/public/yql?q=select wind from weather.forecast where woeid in (select woeid from geo.places(1) where text='document.getElementById('search')')"></script>
+</html>
