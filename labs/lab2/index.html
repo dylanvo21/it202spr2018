@@ -12,7 +12,7 @@
     <div class="container" id="home">
     </div>
     <div class="container" id="search">
-      <input type ="textbox" id="query" placeholder="Search">
+      <input type ="text" id="query" placeholder="Search">
       <button id="search">Search</button>
     </div>
     <div class="container" id="results">
@@ -30,19 +30,20 @@
         $.ajax({
           url: url,
           method: 'GET',
-        }).done(loadResponse(result)).fail(function(err) {
+        }).done((function(response) {
+          $("#results").append("<p> YOur search for <strong>"+$("#query").val()+"</strong> returned " +response.num_r);
+          
+          $.each(response.results, function(i,v){
+            $("#results").append(v.display_title +"opens on" + v.opening_date+"<br>");
+          });
+        }).fail(function(err){
           throw err;
-        });
+        }));
       }
+      
       $("#search").on("click",doSearch());
-      function loadResponse(response){
-        console.log(response);
-        $.each(response.results, function(k,v){
-          console.log(v);
-          $("body").append(v.display_title +"<br>");
-        });
         
-      }
+      
     </script>
   </body>
 </html>
