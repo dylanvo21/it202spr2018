@@ -66,6 +66,7 @@ header.masthead h1 {
 .features-icons {
   padding-top: 7rem;
   padding-bottom: 7rem;
+  color: red;
 }
 
 .features-icons .features-icons-item {
