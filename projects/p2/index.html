@@ -5,6 +5,11 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <title>Dylan Vo-Project 2</title>
     </head>
+    <style>
+          #map {
+              height: 800px;
+            }
+    </style>
     <body>
         <div id="Instructions">
             <h1>Getting Started</h1>
@@ -45,10 +50,30 @@
          <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+       
         <script>
+            $(document).ready(function(){
+                $("#Instructions").show();
+                $("#Search").hide();
+                $("#Locations").hide();
+            })
+            
+            $("#start").on("click",function(){
+                $("#Instructions").hide();
+                $("#Search").show();
+                $("#Locations").hide();
+            })
+            $("#newSearch").on("click",function(){
+                $("#Instructions").hide();
+                $("#Search").show();
+                $("#Locations").hide();
+            })
             var dataList="https://data.cityofchicago.org/resource/76dk-7ieb.json?$where=school_type IN (<schoolType>)"
             function initMap(){
                 $("#schoolSearch").on("click",function(){
+                    $("#Instructions").hide();
+                    $("#Search").hide();
+                    $("#Locations").show();
                     $.get(
                         dataList.replace("<schoolType>",$("#schoolType").val())
                     )
@@ -67,8 +92,7 @@
                                                 '<h3 id = " secondHeading" class = "secondHeading">' + v.short_name + '</h3>' +
                                                 '<div id="bodyContent">' +
                                                 '<br>' + v.address + ", " + v.city + ", " + v.location_state + " " + v.location_zip + '<br>' +
-                                                '<br>' + "Phone: " + v.phone + '<br>' +
-                                                '<br>' + v.summary;
+                                                '<br>' + "Phone: " + v.phone + '<br>'
                                                 '</div>';
                                                 '</div>';
                             var infoWindow=new google.maps.InfoWindow({
@@ -134,5 +158,7 @@
         integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
         crossorigin="anonymous">
     </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGe_SZLKVCoEYoh5nVW-yBN6n-6JntgAY&callback=initMap"
+    async defer></script>
     </body>
 </html>
