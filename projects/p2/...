@@ -1,0 +1,299 @@
+
+<html>
+    <style>
+         .screen {
+              display: none;
+              min-height: 999px;
+              color: white;
+              padding: 15px;
+            }
+            
+           #home {
+              display: none;
+              background: url(background.jpeg) no-repeat center fixed;
+              background-size: cover;
+            }
+            #search {
+              display: none;
+              background-color: black;
+            }
+            
+            #Results {
+              display: none;
+              background-color: Blue;
+            }
+            
+            #about {
+              display: none;
+              background-color: MediumBlue;
+            }
+            
+            #map {
+              height: 500px;
+            }
+            
+            nav {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                background-color: #333;
+            }
+            
+            li {
+                float: left;
+            }
+            
+            li a {
+                display: block;
+                color: white;
+                text-align: center;
+                padding: 14px 16px;
+                text-decoration: none;
+            }
+            
+            li a:hover:not(.active) {
+                background-color: #111;
+            }
+            
+            .active {
+                background-color: #4CAF50;
+            }
+            
+            h1 {
+              color: black;
+            }
+            
+            h2 {
+              color: black;
+            }
+            h3 {
+              color: black;
+            }
+    </style>
+    
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <title>Project 2 - Shivam Mehrotra</title>
+        <link rel="stylesheet" href="node_modules/material-components-web/dist/material-components-web.css">
+    </head>
+    
+    <body>
+    <<!--navigation bar-->
+      <nav>
+        <li><a class="active" href="#home">Home</a></li>
+        <li><a href="#search">Search</a></li>
+        <li><a href="#Results">Map</a></li>
+        <li><a href="#about">About</a></li>
+      </nav>
+
+        <!--home screen-->
+        <div id="home" class="screen" style="text-align:center">
+            <h1>Welcome!</h1>
+            <h3>Click get started to go to the next screen!</h3>
+            <button id = "start" class = "btn btn-primary" onClick = "switchTo('home')" >Get Started</button>
+        </div>
+        
+        <!--search screen-->
+        <div id = "search" class = "form-group form-inline screen" style="text-align:center">
+          <h3>Please select the type of school type you want filtered.</h3>
+          <!--Drop down menu-->
+          <select id ="schoolType" class="form-control" placeholder="School Type" name="School Type" multiple>
+                  <option value = "'Career academy'"> Career academy </option>
+                  <option value = "'Charter'"> Charter </option>
+                  <option value = "'Citywide-Option'"> Citywide-Option </option>
+                  <option value = "'Classical'"> Classical </option>
+                  <option value = "'Contract'"> Contract </option>
+                  <option value = "'Magnet'"> Magnet </option>
+                  <option value = "'Military academy'"> Military academy </option>
+                  <option value = "'Neighborhood'"> Neighborhood </option>
+                  <option value = "'Regional gifted center'"> Regional gifted center </option>
+                  <option value = "'Selective enrollment'"> Selective enrollment </option>
+                  <option value = "'Small'"> Small </option>
+                  <option value = "'Special Education'"> Special Education </option>
+          </select>
+          <input id = "btnSearch" class = "btn btn-primary" type = "submit" onClick = "switchTo('search')"> <br>
+          <span style = "color: blue;">.</span><br>
+          <div id = "sResults"></div>
+        </div>
+        
+        <!--map screen-->
+        <div id="Results" class="screen" style="text-align:center">
+          <h1>Map</h1>
+          <h3>Map locations for each school</h3>
+          <div id="map"></div>
+          <div id = "results"></div>
+        </div>
+        
+        <div id="about" class = "screen" style = "text-align: center">
+            <h1>Project 2</h1>
+            <h2>Shivam Mehrotra</h2>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+        
+        <script>
+          $(document).ready(function(){
+            document.getElementById("home").style.display = "block" ;
+            
+            });
+            
+          function switchTo(id) {
+            var newSearch = id;
+            if(newSearch == "home") {
+              document.getElementById("home").style.display = "none";
+              document.getElementById("search").style.display = "block";
+            }
+            else if (newSearch == "search") {
+              document.getElementById("search").style.display = "none";
+              document.getElementById("Results").style.display = 'block';
+            }
+          }
+        </script>
+        
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+        
+        <script>
+            $("#home").show();
+            
+            $("li a").on("click", function() {
+            	$(".screen").hide();
+                var targetSelector = $(this).attr("href");
+                console.log(targetSelector);
+                $(targetSelector).show();
+            });
+            
+            
+            //variables to store different information
+            var url = "https://data.cityofchicago.org/resource/76dk-7ieb.json?$where=school_type IN (<school type goes here>)";
+            var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            var labelIndex = 0;
+            
+            //script to create positiosn on the map :D
+            function initMap() {
+                
+                //when the button is clicked..do this
+                $("#btnSearch").on("click", function() {
+                    $.get(
+                        //gets value and puts it into the cityofchicago website url
+                        url.replace("<school type goes here>", $("#schoolType").val())
+                    )
+                    .done(function(response) {
+                        
+                        //centers map on chicago & creates it
+                        var myLatLng = {lat: 41.8781, lng: -87.6298};
+                        var map = new google.maps.Map(document.getElementById('map'), {
+                            zoom: 10,
+                            center: myLatLng,
+                        });
+                        
+                        //display responses on console
+                        $("#results").text("");
+                    
+                        
+                        $.each(response, function(i,v) {
+                            //puts 
+                            $("#sResults").append("<br>" + v.long_name + "<br>"  + v.school_type + "<br>" + v.address +  " " + v.location_state 
+                                                        + " " + v.location_zip + "<br>" + "Phone number: " + v.phone + "<br>" );
+                            
+                            //Show results
+                            $("#results").append("<br>" + v.long_name + "<br>"  + v.school_type + "<br>" + v.address +  " " + v.location_state 
+                                                        + " " + v.location_zip + "<br>" + "Phone number: " + v.phone + "<br>" );
+                            
+                            //adds text when the marker is highlighted
+                            var contentString = '<div id = "content" style = "color:Black;">'+
+                                                '<div id = "siteNotice">'+
+                                                '</div>'+
+                                                '<h1 id = "firstHeading" class = "firstHeading">' + v.long_name + '</h1>' +
+                                                '<h3 id = " secondHeading" class = "secondHeading">' + v.short_name + '</h3>' +
+                                                '<div id="bodyContent">' +
+                                                '<br>' + v.address + ", " + v.city + ", " + v.location_state + " " + v.location_zip + '<br>' +
+                                                '<br>' + "Phone: " + v.phone + '<br>' +
+                                                '<br>' + v.summary;
+                                                '</div>';
+                                                '</div>';
+                            
+                            var infowindow = new google.maps.InfoWindow({
+                                content: contentString
+                            });                       
+                            
+                            //assigns different markers to the string position
+                            if(v.school_type == "Career academy") {
+                              labelIndex = 0;
+                            }
+                            
+                            if(v.school_type == "Charter") {
+                              labelIndex = 1;
+                            }
+                            
+                            if(v.school_type == "Citywide-Option") {
+                              labelIndex = 2;
+                            }
+                            
+                            if(v.school_type == "Classical") {
+                              labelIndex = 3;
+                            }
+                            
+                            if(v.school_type == "Contract") {
+                              labelIndex = 4;
+                            }
+                            
+                            if(v.school_type == "Magnet") {
+                              labelIndex = 5;
+                            }
+                            
+                            if(v.school_type == "Military academy") {
+                              labelIndex = 6;
+                            }
+                            
+                            if(v.school_type == "Neighborhood") {
+                              labelIndex = 7;
+                            }
+                            
+                            if(v.school_type == "Regional gifted center") {
+                              labelIndex = 8;
+                            }
+                            
+                            if(v.school_type == "Selective enrollment") {
+                              labelIndex = 9;
+                            }
+                            
+                            if(v.school_type == "Small") {
+                              labelIndex = 10;
+                            }
+                            
+                            if(v.school_type == "Special Education") {
+                              labelIndex = 11;
+                            }
+                            //Creates marker with the letter of string to it in the map
+                            var marker = new google.maps.Marker({
+                              position: {lat:parseFloat( response[i].school_latitude), lng: parseFloat(response[i].school_longitude)},
+                              map: map,
+                              label: labels[labelIndex] 
+                            });
+                            
+                            //opens info window on click with the created map
+                            marker.addListener('click', function() {
+                            infowindow.open(map, marker);
+                            });
+                        });
+                    });
+                });
+            }
+        </script>
+    
+    <script
+        src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous">
+    </script>
+    
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC7GwIaTSXDP8x4_nrJ1QAS1VJYCJW1xVM&callback=initMap">
+    </script>
+    </body>
+</html>

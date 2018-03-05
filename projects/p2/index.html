@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <title>Dylan Vo-Project 2</title>
+    </head>
+    <body>
+        <div id="Instructions">
+            <h1>Getting Started</h1>
+            <div id="list">
+                <ul>
+                    <li>First select he desired Schools</li>
+                    <li>Next click go and locate all the schools of the desired category</li>
+                </ul>
+            </div>
+            <button id="start" class="btn btn-primary" >Let's Begin!</button>
+        </div>
+        <div id="Search">
+            <h1>Select a School</h1>
+            <select id="schoolType">
+                <option value = "'Career academy'"> Career academy </option>
+                <option value = "'Charter'"> Charter </option>
+                <option value = "'Citywide-Option'"> Citywide-Option </option>
+                <option value = "'Classical'"> Classical </option>
+                <option value = "'Contract'"> Contract </option>
+                <option value = "'Magnet'"> Magnet </option>
+                <option value = "'Military academy'"> Military academy </option>
+                <option value = "'Neighborhood'"> Neighborhood </option>
+                <option value = "'Regional gifted center'"> Regional gifted center </option>
+                <option value = "'Selective enrollment'"> Selective enrollment </option>
+                <option value = "'Small'"> Small </option>
+                <option value = "'Special Education'"> Special Education </option>
+            </select>
+            <br>
+            <br>
+            <button id="schoolSearch" class="btn btn-primary">Go!</button>
+        </div>
+    
+        <div id="Locations">
+            <h1>Here are the desired locations of the schools searched for...</h1>
+            <button id="newSearch" class="btn btn-primary">New Search</button>
+            <div id="map"></div>
+        </div>
+         <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+        <script>
+            var dataList="https://data.cityofchicago.org/resource/76dk-7ieb.json?$where=school_type IN (<schoolType>)"
+            function initMap(){
+                $("#schoolSearch").on("click",function(){
+                    $.get(
+                        dataList.replace("<schoolType>",$("#schoolType").val())
+                    )
+                    .done(function(response){
+                        console.log(response);
+                        var myCenter={lat:41.878,lng:-87.6298};
+                        var map=new google.maps.Map(document.getElementById('map'),{
+                            zoom:12,
+                            center:myCenter,
+                        });
+                        $.each(response,function(i,v){
+                            var contentString = '<div id = "content" style = "color:Black;">'+
+                                                '<div id = "siteNotice">'+
+                                                '</div>'+
+                                                '<h2 id = "firstHeading" class = "firstHeading">' + v.long_name + '</h2>' +
+                                                '<h3 id = " secondHeading" class = "secondHeading">' + v.short_name + '</h3>' +
+                                                '<div id="bodyContent">' +
+                                                '<br>' + v.address + ", " + v.city + ", " + v.location_state + " " + v.location_zip + '<br>' +
+                                                '<br>' + "Phone: " + v.phone + '<br>' +
+                                                '<br>' + v.summary;
+                                                '</div>';
+                                                '</div>';
+                            var infoWindow=new google.maps.InfoWindow({
+                                content: contentString
+                            });
+                            var mark="Markers/";
+                            switch(v.school_type){
+                                case "Career academy":
+                                  mark += "blackicon.PNG"
+                                  break;
+                                case "Charter":
+                                  mark += "blueicon.PNG"
+                                  break;
+                                case "Citywide-Option":
+                                  mark += "darkgray.PNG"
+                                  break;
+                                case "Classical":
+                                  mark += "darkpurp.PNG"
+                                  break;
+                                 case "Contract":
+                                  mark += "greenicon.PNG"
+                                  break;
+                                case "Magnet":
+                                  mark += "lightorange.PNG"
+                                  break;
+                                case "Military academy":
+                                  mark += "orangeicon.PNG"
+                                  break;
+                                case "Neighborhood":
+                                  mark += "purpleicon.PNG"
+                                  break;
+                                case "Regional gifted center":
+                                  mark += "redicon.PNG"
+                                  break;
+                                case "Selective enrollment":
+                                  mark += "silvericon.PNG"
+                                  break;
+                                case "Small":
+                                  mark += "yellowicon.PNG"
+                                  break;
+                                case "Special Education":
+                                  mark += "darkblue.PNG"
+                                  break;
+                           }
+                           var markers= new google.maps.Marker({
+                               position:{lat:parseFloat(response[i].school_latitude),lng: parseFloat(response[i].school_longitude)},
+                               map: map,
+                               icon:mark
+                           });
+                            markers.addListener('click',function(){
+                                infoWindow.open(map,markers);
+                            });
+                        });
+                        
+                    });
+                });
+            }
+        
+        </script>
+            
+    <script
+        src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous">
+    </script>
+    </body>
+</html>
