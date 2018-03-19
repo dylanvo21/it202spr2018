@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Homework 17</title>
+    </head>
+    <script type="text/javascript">
+        if ('caches' in window) {
+            caches.open('saved-content').then((cache) => {
+                cache.match('image.png').then((response) => {
+                    if (response == undefined)
+                        cache.add('image.png');
+                });
+                cache.match('h17.html').then((response) => {
+                        if (response == undefined)
+                            cache.add('h17.html');
+                });
+            });
+        }
+    </script>
+    <body>
+        <img src="image.png">
+    </body>
+</html>
