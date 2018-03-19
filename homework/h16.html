@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Restaurant Locator</title>
+    </head>
+    
+    <body>
+        <div>Restaurant Locator</div>
+        <button id="search">Search</button>
+        <ol id="result"></ol>
+    
+    </body>
+    
+    <script src="https://unpkg.com/dexie@latest/dist/dexie.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script>
+        $("#search").click(function(){
+            $("#result").empty();
+            var db = new Dexie("AppDB");
+            db.version(1).stores({
+                Restaurants: '++id, name, cuisine'
+            });
+            db.Restaurants.add({
+                name: "Five Guys",
+                cuisine: "American"
+            })
+            db.Restaurants.add({
+                name: "Thai Bowl",
+                cuisine: "Thai"
+            })
+            db.Restaurants.add({
+                name: "Seven Treasures",
+                cuisine: "Chinese"
+            })
+            
+            db.Restaurants.where('cuisine').noneOf(['Thai']).each(function(restaurant) {
+                $("#result").append('<li>Name: ' + restaurant.name + ", Cuisine: " + restaurant.cuisine + '</li>');
+            });
+            
+        })
+    </script>
+
+</html>
