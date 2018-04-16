@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Project 5 </title>
+    </head>
+    <body>
+        <video id="player" controls autoplay></video>
+        <button id="capture">Capture</button>
+        <canvas id="canvas" width=320 height=240></canvas>
+        <div id="collage">
+            <canvas></canvas>
+            <p></p>
+        </div>
+        <div id="imageData" ></div>
+        
+        
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+        <script>
+          const player = document.getElementById('player');
+          const canvas = document.getElementById('canvas');
+          const context = canvas.getContext('2d');
+          const captureButton = document.getElementById('capture');
+          var tl;
+          var tr;
+          var bl
+          var br;
+          
+          const constraints = {
+            video: true,
+          };
+            
+          captureButton.addEventListener('click', () => {
+            // Draw the video frame to the canvas.
+            
+            context.drawImage(player, 0, 0, canvas.width, canvas.height);
+            getImageData();
+          });
+        
+          // Attach the video stream to the video element and autoplay.
+          navigator.mediaDevices.getUserMedia(constraints)
+            .then((stream) => {
+              player.srcObject = stream;
+            });
+            var requestBody;
+            var visionApiEndpoint="https://vision.googleapis.com/v1/images:annotate";
+        function getImageData(){
+            requestBody={
+             "requests":[
+                {
+                    "image":{
+                        "content":canvas.toDataURL().split(",")[1]
+                    },
+                    "features":[
+                        {
+                            "type":"LABEL_DETECTION",
+                            "maxResults":10
+                        },
+                        {
+                            "type":"FACE_DETECTION"
+                        }
+                    ]          
+                }       
+            ]
+        };
+        $.ajax({
+            method: "POST",
+            contentType: "application/json",
+            url: visionApiEndpoint+"?key=AIzaSyCjktrraBFU2k-H_tD1SYZ2l4fsrxdanyE",
+            data: JSON.stringify(requestBody)
+        })
+        .done(function(response){
+            console.log(response);
+            $.each(response, function(i,v){
+                if (v[0].faceAnnotations != undefined && v[0].faceAnnotations.length > 0) {        
+                    var vertices = v[0].faceAnnotations[0].boundingPoly.vertices;
+                    tl=vertices[0].x;
+                    tr=vertices[0].y;
+                    bl=vertices[2].x-vertices[0].x;
+                    br=vertices[2].y-vertices[0].y;
+                            var count=1;
+        var makeface=$(collage).clone().attr("id","image"+count);
+        makeface.find("canvas").attr("width",bl).attr("height",br);
+        const canvas2=makeface.find("canvas").get(0);
+        count++;
+        $.each(response, function(i, v) {
+                $("#imageData").prepend(makeface);
+                const context2 = canvas2.getContext('2d');
+                context2.drawImage(canvas,tl, tr, bl, br, 0, 0, canvas2.width, canvas2.height);
+
+                    });
+                }
+                else{
+                    $("#imageData").append("<p>No face</p>");
+                }
+            })
+
+        });
+    }    
+
+        </script>
+    </body>
+
+</html>
+
+
