@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Test</title>
+    </head>
+        <style>
+          #map {
+              height: 800px;
+            }
+    </style>
+    <body>
+    <div id="map">    </div>        
+    </body>
+             <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+  
+    <script>
+
+        function initMap() {
+            var chicago = {lat: 41.8788, lng: -87.628};
+            var map = new google.maps.Map(document.getElementById('map'), {
+              zoom: 12,
+              center: chicago
+            });
+            var url="https://data.cityofchicago.org/resource/787j-mys9.json?$where=within_circle(location,41.8781,-87.6298,1000)";
+            $.get(url)
+            .done(function(response){
+                console.log(response);
+                $.each(response,function(i,v){
+                        var marker = new google.maps.Marker({
+                            position: {lat:parseFloat(v.latitude),lng:parseFloat(v.longitude)},
+                            map: map
+                    }); 
+                });
+            });
+            }
+
+    </script>
+        <script
+        src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous">
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGe_SZLKVCoEYoh5nVW-yBN6n-6JntgAY&callback=initMap"
+    async defer></script>
+</html>
