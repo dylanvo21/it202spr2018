@@ -210,7 +210,7 @@
           
     }
     function getSpeed(){
-      $.get(url2)
+      $.get(url2.replace("latitude,longitude",lat+","+long))
       .done(function(response){
         console.log(response)
           $.each(response,function(i,v){
@@ -222,7 +222,6 @@
           })
       })
     }
-
     </script>
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGe_SZLKVCoEYoh5nVW-yBN6n-6JntgAY&callback=initMap"
     async defer></script>
