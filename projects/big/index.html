@@ -1,9 +1,230 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title> </title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Ticket Me Not</title>
+        <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.css" rel="stylesheet">
+        
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+    
+        <style>
+            .hidden {display:none;}
+            body {margin: 0;}
+            h1 {padding-top:16px;}
+            a.material-icons {text-decoration: none;}
+            .screen {padding-left: 16px;}
+                      #map {
+              height: 800px;
+            }
+        </style>
     </head>
-    <body>
+    <body class="mdc-typography">
+        <header class="mdc-toolbar mdc-toolbar--fixed demo-toolbar">
+              <div class="mdc-top-app-bar__row">
+                <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+                  <a href="#" class="material-icons mdc-top-app-bar__navigation-icon">menu</a>
+                  <span class="mdc-top-app-bar__title">Ticket Me Not</span>
+                </section>
+              </div>
+            </header>
+        
+        
+        <main>
+        <div class="mdc-toolbar-fixed-adjust">
+          <div class="">
+            <div class="screen hidden" id="search">
+                <h1>Search</h1>
+                <p>This application will give you data about tickets that involve speed cameras and red cameras to help you know which lights you can zoom pass and which you have to slow down for!</p>
+                <br>
+                <p>Press the Do search button so we can locate your position!</p>
+                <button  class="mdc-button" id="doSearch">Do Search</button>
+                <p id="post"></p>
+            </div>
+            <div class="screen hidden" id="list">
+                <h1>Results</h1>
+                <ul id="resultList" class="mdc-list mdc-list--two-line mdc-list--avatar-list demo-list demo-list--with-avatars demo-list--icon-placeholders">
+              <li id="template" class="mdc-list-item hidden">
+                <span class="mdc-list-item__graphic" role="presentation">
+                  <i class="material-icons" aria-hidden="true">folder</i>
+                </span>
+                <span class="mdc-list-item__text">
+                  Photos
+                  <span class="mdc-list-item__secondary-text">Jan 9, 2014</span>
+                </span>
+                <a href="#" target="_blank" class="mdc-list-item__meta material-icons" aria-label="View more information" title="More info">
+                  cloud-circle</a>
+              </li>
 
-    </body>
+            </ul>
+                
+                
+                </div>
+            <div class="mdc-layout-grid__cell screen hidden" id="map">
+                <h1>Map</h1>
+                </div>
+            <div class="mdc-layout-grid__cell screen hidden" id="about">
+                <h1>About</h1></div>
+          </div>
+        </div>
+        </main>
+
+        <aside class="mdc-drawer mdc-drawer--temporary mdc-typography" data-mdc-auto-init="MDCTemporaryDrawer">
+          <nav class="mdc-drawer__drawer">
+            <header class="mdc-drawer__header">
+              <div class="mdc-drawer__header-content">
+                Asteroid Search
+              </div>
+            </header>
+            <nav id="icon-with-text-demo" class="mdc-drawer__content mdc-list">
+              <a class="mdc-list-item mdc-list-item--activated" href="#" data-screen="search">
+                <i class="material-icons mdc-list-item__graphic" aria-hidden="true">search</i>Search
+              </a>
+              <a class="mdc-list-item" href="#" data-screen="list">
+                <i class="material-icons mdc-list-item__graphic" aria-hidden="true">list</i>List
+              </a>
+              <a class="mdc-list-item" href="#" data-screen="map">
+                <i class="material-icons mdc-list-item__graphic" aria-hidden="true">map</i>Map
+              </a>
+            </nav>
+          </nav>
+        </aside>
+
+
+        
+        <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.js"></script>
+    
+    
+        <script>
+             window.mdc.autoInit();
+              
+              
+             let drawer = new mdc.drawer.MDCTemporaryDrawer(document.querySelector('.mdc-drawer--temporary'));
+            
+            document.querySelector('.mdc-top-app-bar__navigation-icon').addEventListener('click', () => drawer.open = true);
+            
+            var drawerLinks = document.querySelectorAll('.mdc-list-item');
+            
+             for (var i = 0; i < drawerLinks.length; i++) {
+            
+                 drawerLinks[i].addEventListener('click', (e) => {
+    
+                     var screen;
+                     var attributes = e.target.attributes;
+                     
+                     for (var i = 0; i < attributes.length; i++) {
+                      console.log(attributes[i].name,attributes[i].value);
+                      if (attributes[i].name =="data-screen") {
+                          screen = attributes[i].value;
+                      }
+                      }
+                     drawer.open = false;
+    
+                     showScreen(screen)
+                });
+             }
+            
+            showScreen("search");
+            
+            function showScreen(id) {
+                console.log(id);
+                var screens = document.querySelectorAll(".screen");
+                for (var i = 0; i < screens.length; i++) {
+                    screens[i].classList.add("hidden");
+                }
+                
+                document.querySelector("#" + id).classList.remove("hidden");
+            }
+            
+            
+        </script>
+    
+
+
+    
+    
+    
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.min.js"
+      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+      crossorigin="anonymous"></script>
+
+
+
+
+    <script>
+    $("#doSearch").on("click", getLocation);
+    var x = document.getElementById("post");
+    var lat;
+    var long;
+    function getLocation(){
+        
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        } 
+        else { 
+            x.innerHTML = "Geolocation is not supported by this browser.";
+        }
+    }
+    function showPosition(position) {
+        lat=position.coords.latitude;
+        long=position.coords.longitude;
+        initMap();
+    }
+    var url1="https://data.cityofchicago.org/resource/twfh-866z.json?$where=within_circle(location,latitude,longitude,1000)";
+    var url2="https://data.cityofchicago.org/resource/3v4z-xnbf.json?$where=within_circle(location,latitude,longitude,1000)";
+    var map;
+    var myCenter;
+    function initMap(){
+        $.get(url1.replace("latitude,longitude",lat+","+long)
+          )
+        .done(function(response){
+            console.log(response);
+            myCenter={lat:parseFloat(lat),lng:parseFloat(long)};
+            map=new google.maps.Map(document.getElementById('map'),{
+              zoom:15,
+              center:myCenter,
+            
+          });
+          var infoWindow=new google.maps.InfoWindow({
+            content:"Your Location"
+          });
+          var mark=new google.maps.Marker({
+            position:{lat:parseFloat(lat),lng:parseFloat(long)},
+            map:map,
+            label:"You"
+          });
+          mark.addListener('click',function(){
+            infoWindow.open(map,mark);
+          })
+          getSpeed();
+          $.each(response,function(i,v){
+              var markers=new google.maps.Marker({
+                position:{lat:parseFloat(response[i].latitude),lng:parseFloat(response[i].longitude)},
+                label:"Red",
+                map:map
+              })
+          })
+        })
+       
+          
+    }
+    function getSpeed(){
+      $.get(url2)
+      .done(function(response){
+        console.log(response)
+          $.each(response,function(i,v){
+              var markers=new google.maps.Marker({
+                position:{lat:parseFloat(response[i].latitude),lng:parseFloat(response[i].longitude)},
+                label:"Speed",
+                map:map
+              })
+          })
+      })
+    }
+
+    </script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGe_SZLKVCoEYoh5nVW-yBN6n-6JntgAY&callback=initMap"
+    async defer></script>
+  </body>
 </html>
