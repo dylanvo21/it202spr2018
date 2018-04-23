@@ -150,8 +150,6 @@
       crossorigin="anonymous"></script>
 
 
-
-
     <script>
     $("#doSearch").on("click", getLocation);
     var x = document.getElementById("post");
@@ -176,6 +174,8 @@
     var map;
     var myCenter;
     function initMap(){
+        var clone, separator, contentText;
+            var separator
         $.get(url1.replace("latitude,longitude",lat+","+long)
           )
         .done(function(response){
@@ -205,11 +205,27 @@
                 map:map
               })
           })
+          $.each(response,function(i,v){
+                clone = $("#template").clone().removeClass("hidden");
+                clone.find(".mdc-list-item__text").text("Violation Date" + response[i].violation_date);
+                // secondary text
+                contentText = $("<span>").addClass("mdc-list-item__secondary-text");
+                contentText.text("Intersection:"+response[i].intersection+ "Number of violations at this light:"+ response[i].violations);
+                clone.find(".mdc-list-item__text").append(contentText);
+
+                clone.attr("id","notTemplate")
+                
+                var separator = $("<li>").addClass("mdc-list-divider").attr("role","separator");
+                $("#resultList").append(separator);
+                $("#resultList").append(clone);
+          })
         })
        
           
     }
     function getSpeed(){
+              var clone, separator, contentText;
+            var separator
       $.get(url2.replace("latitude,longitude",lat+","+long))
       .done(function(response){
         console.log(response)
@@ -220,9 +236,58 @@
                 map:map
               })
           })
+           $.each(response,function(i,v){
+                clone = $("#template").clone().removeClass("hidden");
+                clone.find(".mdc-list-item__text").text("Violation Date" + response[i].violation_date);
+                // secondary text
+                contentText = $("<span>").addClass("mdc-list-item__secondary-text");
+                contentText.text("Intersection:"+response[i].intersection+ " Number of violations at this light:"+ response[i].violations);
+                clone.find(".mdc-list-item__text").append(contentText);
+
+                clone.attr("id","notTemplate")
+                
+                var separator = $("<li>").addClass("mdc-list-divider").attr("role","separator");
+                $("#resultList").append(separator);
+                $("#resultList").append(clone);
+          })
       })
     }
+    var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
+
+// Open (or create) the database
+var open = indexedDB.open("MyDatabase", 1);
+
+// Create the schema
+open.onupgradeneeded = function() {
+    var db = open.result;
+    var store = db.createObjectStore("MyObjectStore", {keyPath: "id"});
+    var index = store.createIndex("Positions", ["latitude", "longitude"]);
+};
+
+open.onsuccess = function() {
+    // Start a new transaction
+    var db = open.result;
+    var tx = db.transaction("MyObjectStore", "readwrite");
+    var store = tx.objectStore("MyObjectStore");
+    var index = store.index("Positions");
+
+    // Add some data
+    store.put({id: 12345, name: {latitude:41.8781,longitude:-87.6298}});
+    
+    // Query the data
+    var getPost = store.get(12345);
+
+    getPost.onsuccess = function() {
+        console.log(getPost.result.latitude);
+    };
+
+    // Close the db when the transaction is done
+    tx.oncomplete = function() {
+        db.close();
+    };
+}
     </script>
+    
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGe_SZLKVCoEYoh5nVW-yBN6n-6JntgAY&callback=initMap"
     async defer></script>
   </body>
