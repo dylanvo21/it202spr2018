@@ -1,27 +1,27 @@
-var dataCacheName = 'bigprojectdata-v1';
-var cacheName = 'bigproject-final-v1';
+var dataCacheName = 'Big Project Data Cache v1';
+var cacheName = 'Big Project Cache v1';
 var filesToCache = [
   './',
   './index.html'
 ];
 
 self.addEventListener('install', function(e) {
-  console.log('[ServiceWorker] Install');
+  //console.log('[ServiceWorker] Install');
   e.waitUntil(
     caches.open(cacheName).then(function(cache) {
-      console.log('[ServiceWorker] Caching app shell');
+      //console.log('[ServiceWorker] Caching app shell');
       return cache.addAll(filesToCache);
     })
   );
 });
 
 self.addEventListener('activate', function(e) {
-  console.log('[ServiceWorker] Activate');
+  //console.log('[ServiceWorker] Activate');
   e.waitUntil(
     caches.keys().then(function(keyList) {
       return Promise.all(keyList.map(function(key) {
         if (key !== cacheName && key !== dataCacheName) {
-          console.log('[ServiceWorker] Removing old cache', key);
+          //console.log('[ServiceWorker] Removing old cache', key);
           return caches.delete(key);
         }
       }));
@@ -40,14 +40,38 @@ self.addEventListener('activate', function(e) {
   return self.clients.claim();
 });
 
+/*self.addEventListener('fetch', function(e) {
+  //console.log('[ServiceWorker] Fetch', e.request.url);
+  var dataUrl = 'https://query.yahooapis.com/v1/public/yql';
+  if(1==1)//e.request.url.indexOf(dataUrl) > -1){
+    e.respondWith(
+      caches.open(dataCacheName).then(function(cache){
+        return fetch(e.request).then(function(response){
+          console.log('caching'+e.request)
+          cache.put(e.request.url, response.clone());
+          return response;
+        });
+      })
+      
+    );  
+    
+  } else {
+    e.respondWith(
+      caches.match(e.request).then(function(response){
+        return response || fetch(e.request);
+      }));
+  }
+  
+  
+});*/
 
 self.addEventListener('fetch', function(event) {
-  console.log('adding fetch event listener');
+  console.log('adding fetch event listener')
   event.respondWith(
     caches.match(event.request).then(function(resp) {
       return resp || fetch(event.request).then(function(response) {
-        return caches.open('bigproject-final-v1').then(function(cache) {
-          console.log('caching'+event.request);
+        return caches.open('Big Project Cache v1').then(function(cache) {
+          console.log('caching'+event.request)
           cache.put(event.request, response.clone());
           return response;
         });  

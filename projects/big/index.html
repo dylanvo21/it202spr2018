@@ -93,7 +93,17 @@
 
         
         <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.js"></script>
+<script>
+        if('serviceWorker' in navigator){
+      navigator.serviceWorker.register('./service-worker.js')
+      .then(function(reg){
+        console.log("registered sw");
+      }).catch(function(err){
+        console.log(err);
+      });
+    }
     
+</script>
     
         <script>
              window.mdc.autoInit();
