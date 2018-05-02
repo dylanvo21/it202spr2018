@@ -1,7 +1,7 @@
-
-var dataCacheName = 'weatherData-v2';
-var cacheName = 'weatherPWA-step-6-1';
+var dataCacheName = 'bigprojectdata-v1';
+var cacheName = 'bigproject-final-v1';
 var filesToCache = [
+  './',
   './index.html'
 ];
 
@@ -40,26 +40,18 @@ self.addEventListener('activate', function(e) {
   return self.clients.claim();
 });
 
-self.addEventListener('fetch', function(e) {
-  console.log('[ServiceWorker] Fetch', e.request.url);
-  var dataUrl = 'https://query.yahooapis.com/v1/public/yql';
-  if(e.request.url.indexOf(dataUrl) > -1){
-    e.respondWith(
-      caches.open(dataCacheName).then(function(cache){
-        return fetch(e.request).then(function(response){
-          cache.put(e.request.url, response.clone());
+
+self.addEventListener('fetch', function(event) {
+  console.log('adding fetch event listener');
+  event.respondWith(
+    caches.match(event.request).then(function(resp) {
+      return resp || fetch(event.request).then(function(response) {
+        return caches.open('bigproject-final-v1').then(function(cache) {
+          console.log('caching'+event.request);
+          cache.put(event.request, response.clone());
           return response;
-        });
-      })
-      
-    );  
-    
-  } else {
-    e.respondWith(
-      caches.match(e.request).then(function(response){
-        return response || fetch(e.request);
-      }));
-  }
-  
-  
+        });  
+      });
+    })
+  );
 });
