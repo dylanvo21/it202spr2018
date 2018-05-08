@@ -34,6 +34,9 @@
     var url="https://data.cityofchicago.org/resource/t57k-za2y.json?clinic_type=<clinicType>"
     function initMap(){
         $("#sear").on("click",function(){
+            $("#results").empty();
+        })
+        $("#sear").on("click",function(){
             $.get(url.replace("<clinicType>",$("#type").val())
             )
             .done(function(response){
